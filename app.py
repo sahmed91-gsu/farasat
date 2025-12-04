@@ -119,13 +119,15 @@ def index():
 
 @app.route('/predict_stream', methods=['POST'])
 def predict_stream():
+    global chroma_collection  # <-- MUST be first
+
     if not chroma_collection:
         print("⚠️ Chroma collection is None. Retrying connection...")
         try:
             client = chromadb.PersistentClient(path=DB_PATH)
-            global chroma_collection
             chroma_collection = client.get_collection("production_db")
-        except:
+        except Exception as e:
+            print("❌ Database reconnection failed:", e)
             return {"error": "Database initialization failed. Check server logs."}, 503
     
     req_data = request.json
@@ -143,6 +145,7 @@ def predict_stream():
             yield json.dumps(step) + "\n"
 
     return Response(stream_with_context(generate()), mimetype='application/x-ndjson')
+
 
 @app.route('/submit_feedback', methods=['POST'])
 def submit_feedback():
