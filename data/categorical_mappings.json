@@ -1,0 +1,278 @@
+{
+  "AGE": {
+    "1": "12-14 years",
+    "2": "15-17 years",
+    "3": "18-20 years",
+    "4": "21-24 years",
+    "5": "25-29 years",
+    "6": "30-34 years",
+    "7": "35-39 years",
+    "8": "40-44 years",
+    "9": "45-49 years",
+    "10": "50-54 years",
+    "11": "55-64 years",
+    "12": "65 years and older",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "GENDER": {
+    "1": "Male",
+    "2": "Female",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "RACE": {
+    "1": "Alaska Native (Aleut, Eskimo, Indian)",
+    "2": "American Indian (other than Alaska Native)",
+    "3": "Asian or Pacific Islander",
+    "4": "Black or African American",
+    "5": "White",
+    "6": "Asian",
+    "7": "Other single race",
+    "8": "Two or more races",
+    "9": "Native Hawaiian or Other Pacific Islander",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "MARSTAT": {
+    "1": "Never married",
+    "2": "Married",
+    "3": "Separated",
+    "4": "Divorced, widowed",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "LIVARAG": {
+    "1": "Homeless",
+    "2": "Dependent living",
+    "3": "Independent living",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "DSMCRIT": {
+    "1": "Alcohol-induced disorder",
+    "2": "Substance-induced disorder",
+    "3": "Alcohol intoxication",
+    "4": "Alcohol dependence",
+    "5": "Opioid dependence",
+    "6": "Cocaine dependence",
+    "7": "Cannabis dependence",
+    "8": "Other substance dependence",
+    "9": "Alcohol abuse",
+    "10": "Cannabis abuse",
+    "11": "Other substance abuse",
+    "12": "Opioid abuse",
+    "13": "Cocaine abuse",
+    "14": "Anxiety disorders",
+    "15": "Depressive disorders",
+    "16": "Schizophrenia / psychotic disorders",
+    "17": "Bipolar disorder",
+    "18": "ADHD / disruptive behavior disorders",
+    "19": "Other mental health condition",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "DIVISION": {
+    "0": "U.S. territories",
+    "1": "New England",
+    "2": "Middle Atlantic",
+    "3": "East North Central",
+    "4": "West North Central",
+    "5": "South Atlantic",
+    "6": "East South Central",
+    "7": "West South Central",
+    "8": "Mountain",
+    "9": "Pacific"
+  },
+  "REGION": {
+    "0": "U.S. territories",
+    "1": "Northeast",
+    "2": "Midwest",
+    "3": "South",
+    "4": "West"
+  },
+  "DAYWAIT": {
+    "0": "No wait",
+    "1": "1 week or less",
+    "2": "1–2 weeks",
+    "3": "2–4 weeks",
+    "4": "More than a month",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "METHUSE": {
+    "1": "Yes — medication-assisted opioid therapy",
+    "2": "No — medication-assisted opioid therapy",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "PRIMINC": {
+    "1": "Wages/salary",
+    "2": "Public assistance",
+    "3": "Retirement/pension, disability",
+    "4": "Other",
+    "5": "None",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "HLTHINS": {
+    "1": "Private insurance",
+    "2": "Medicaid",
+    "3": "Medicare",
+    "4": "None",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "PRIMPAY": {
+    "1": "Self-pay",
+    "2": "Private insurance",
+    "3": "Medicare",
+    "4": "Medicaid",
+    "5": "Other government payments",
+    "6": "No charge (free, charity, special research, teaching)",
+    "7": "Other",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "PSYPROB": {
+    "1": "Yes — co-occurring mental health disorder",
+    "2": "No — co-occurring mental health disorder",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "NOPRIOR": {
+    "0": "No prior treatment",
+    "1": "One or more prior treatment episodes",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "EMPLOY": {
+    "1": "Full-time",
+    "2": "Part-time",
+    "3": "Unemployed",
+    "4": "Not in labor force",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "EDUC": {
+    "1": "Less than Grade 8",
+    "2": "Grades 9 to 11",
+    "3": "Grade 12 (or GED)",
+    "4": "1-3 years college or vocational school",
+    "5": "4+ years of college / postgraduate",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "PREG": {
+    "1": "Yes",
+    "2": "No",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "FREQ1": {
+    "1": "No use in past month",
+    "2": "Some use",
+    "3": "Daily use",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "FREQ2": {
+    "1": "No use in past month",
+    "2": "Some use",
+    "3": "Daily use",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "FRSTUSE1": {
+    "1": "11 years and under",
+    "2": "12–14 years",
+    "3": "15–17 years",
+    "4": "18–20 years",
+    "5": "21–24 years",
+    "6": "25–29 years",
+    "7": "30 years and over",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "FRSTUSE2": {
+    "1": "11 years and under",
+    "2": "12–14 years",
+    "3": "15–17 years",
+    "4": "18–20 years",
+    "5": "21–24 years",
+    "6": "25–29 years",
+    "7": "30 years and over",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "SUB1": {
+    "1": "None",
+    "2": "Alcohol",
+    "3": "Cocaine / crack",
+    "4": "Marijuana / hashish",
+    "5": "Heroin",
+    "6": "Non-prescription methadone",
+    "7": "Other opioids / synthetics",
+    "8": "PCP (phencyclidine)",
+    "9": "Hallucinogens",
+    "10": "Methamphetamine / speed",
+    "11": "Other amphetamines",
+    "12": "Other stimulants",
+    "13": "Benzodiazepines",
+    "14": "Other tranquilizers",
+    "15": "Barbiturates",
+    "16": "Other sedatives / hypnotics",
+    "17": "Inhalants",
+    "18": "Over-the-counter medications",
+    "19": "Other drugs",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "SUB2": {
+    "1": "None",
+    "2": "Alcohol",
+    "3": "Cocaine / crack",
+    "4": "Marijuana / hashish",
+    "5": "Heroin",
+    "6": "Non-prescription methadone",
+    "7": "Other opioids / synthetics",
+    "8": "PCP (phencyclidine)",
+    "9": "Hallucinogens",
+    "10": "Methamphetamine / speed",
+    "11": "Other amphetamines",
+    "12": "Other stimulants",
+    "13": "Benzodiazepines",
+    "14": "Other tranquilizers",
+    "15": "Barbiturates",
+    "16": "Other sedatives / hypnotics",
+    "17": "Inhalants",
+    "18": "Over-the-counter medications",
+    "19": "Other drugs",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "SUB3": {
+    "1": "None",
+    "2": "Alcohol",
+    "3": "Cocaine / crack",
+    "4": "Marijuana / hashish",
+    "5": "Heroin",
+    "6": "Non-prescription methadone",
+    "7": "Other opioids / synthetics",
+    "8": "PCP (phencyclidine)",
+    "9": "Hallucinogens",
+    "10": "Methamphetamine / speed",
+    "11": "Other amphetamines",
+    "12": "Other stimulants",
+    "13": "Benzodiazepines",
+    "14": "Other tranquilizers",
+    "15": "Barbiturates",
+    "16": "Other sedatives / hypnotics",
+    "17": "Inhalants",
+    "18": "Over-the-counter medications",
+    "19": "Other drugs",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "PSOURCE": {
+    "1": "Individual (includes self-referral)",
+    "2": "Alcohol/drug use care provider",
+    "3": "Other health care provider",
+    "4": "School (educational)",
+    "5": "Employer/EAP",
+    "6": "Other community referral",
+    "7": "Court/criminal justice referral/DUI/DWI",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "FREQ_ATND_SELF_HELP": {
+    "1": "No attendance",
+    "2": "1–3 times in past month",
+    "3": "4–7 times in past month",
+    "4": "8–30 times in past month",
+    "5": "Some attendance (frequency unknown)",
+    "-9": "Missing/unknown/not collected/invalid"
+  },
+  "ARRESTS": {
+    "0": "No recent arrests",
+    "1": "One recent arrest",
+    "2": "Two or more recent arrests",
+    "-9": "Missing/unknown/not collected/invalid"
+  }
+}

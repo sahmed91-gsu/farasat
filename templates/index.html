@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farasat | Forensic Clinical AI</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] },
+                    colors: { glass: "rgba(30, 41, 59, 0.7)", border: "rgba(255, 255, 255, 0.08)" }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background-color: #0f172a; background-image: radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.1) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.1) 0px, transparent 50%); background-attachment: fixed; }
+        
+        #welcome-screen { position: fixed; inset: 0; z-index: 50; background: #020617; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease-in-out; }
+        .vignette-overlay { background: radial-gradient(circle, transparent 40%, #020617 90%); }
+
+        .timeline-item { position: relative; padding-left: 2rem; border-left: 2px solid #1e293b; padding-bottom: 1.5rem; opacity: 0; animation: fadeIn 0.4s forwards; }
+        .timeline-item:last-child { border-left: 2px solid transparent; }
+        .timeline-dot { position: absolute; left: -9px; top: 0; width: 16px; height: 16px; border-radius: 50%; background: #0f172a; border: 2px solid #334155; transition: all 0.3s; }
+        .timeline-item.active .timeline-dot { border-color: #10b981; background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* PDF THEME (Strict Black & White) */
+        .pdf-mode {
+            background-color: #ffffff !important;
+            color: #000000 !important;
+            font-family: 'Georgia', serif !important;
+            padding: 40px !important;
+            width: 100% !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        .pdf-mode h1 { color: #000 !important; border-bottom: 2px solid #000 !important; margin-bottom: 20px !important; font-size: 24px !important; }
+        .pdf-mode h2 { color: #000 !important; margin-top: 25px !important; border-bottom: 1px solid #ccc !important; text-transform: uppercase !important; font-size: 16px !important; }
+        .pdf-mode p, .pdf-mode li { color: #000 !important; font-size: 12px !important; line-height: 1.5 !important; }
+        .pdf-mode strong { color: #000 !important; font-weight: 800 !important; }
+        
+        /* ACCORDION */
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .accordion-icon { transition: transform 0.3s ease; }
+        .accordion-open .accordion-icon { transform: rotate(45deg); }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+    </style>
+</head>
+<body class="text-slate-200 font-sans min-h-screen p-4 md:p-8 flex flex-col">
+
+    <!-- WELCOME SCREEN -->
+    <div id="welcome-screen" onclick="enterSystem()">
+        <div class="relative max-w-2xl w-full p-10 flex items-center justify-center">
+            <img src="/static/logo.png" alt="Farasat Logo" class="relative z-10 w-full h-auto object-contain">
+            <div class="absolute inset-0 z-20 vignette-overlay pointer-events-none"></div>
+            <div class="absolute inset-0 bg-emerald-500/10 blur-[100px] rounded-full z-0"></div>
+        </div>
+        <div class="mt-8 text-slate-500 font-mono text-xs uppercase tracking-[0.3em] animate-pulse relative z-30 cursor-pointer hover:text-emerald-400 transition-colors">[ Click to Initialize ]</div>
+    </div>
+
+    <!-- MAIN APP -->
+    <div id="main-app" class="hidden flex-1 flex flex-col opacity-0 transition-opacity duration-1000">
+        <div class="max-w-7xl mx-auto w-full flex justify-between items-center mb-8 px-2">
+            <div class="flex items-center gap-3"><div class="relative w-3 h-3"><div class="absolute w-3 h-3 bg-emerald-500 rounded-full animate-ping opacity-75"></div><div class="relative w-3 h-3 bg-emerald-500 rounded-full"></div></div><h1 class="text-lg font-bold tracking-tight text-white">Farasat<span class="text-slate-600 font-normal ml-2 text-sm">| Where Intuition Meets Intelligence</span></h1></div>
+            <div class="hidden md:flex gap-4 text-xs font-mono text-slate-500"><span>MODEL: GPT-OSS-120B</span><span>DB: CHROMA-DISK</span><span class="text-emerald-500">SYSTEM ACTIVE</span></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 flex-1">
+            <!-- INPUT -->
+            <div class="lg:col-span-4 flex flex-col gap-6">
+                <div class="bg-glass backdrop-blur-xl border border-border rounded-2xl p-1 shadow-2xl">
+                    <div class="bg-slate-900/50 rounded-xl p-5 space-y-4">
+                        <div class="flex justify-between items-center", style="margin-bottom: 5px;"><label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Clinical Intake Note</label><span class="text-[10px] text-emerald-500 font-mono bg-emerald-500/10 px-2 py-0.5 rounded">AI PARSER READY</span></div>
+                        <form id="patientForm" class="contents">
+                            <textarea id="noteInput" rows="14" class="w-full bg-[#0b1121] border border-slate-700/50 rounded-lg p-4 text-sm text-slate-200 focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 focus:outline-none placeholder-slate-600 leading-relaxed font-mono transition-all resize-none mb-4" placeholder="// Enter patient narrative..."></textarea>
+                            <button type="submit" id="runBtn" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-semibold py-3.5 rounded-lg shadow-lg hover:shadow-emerald-500/20 transition-all duration-200 uppercase text-xs tracking-widest disabled:opacity-50 disabled:cursor-wait">Initiate Analysis</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="bg-slate-900/30 border border-white/5 rounded-xl p-5 text-xs text-slate-400 leading-relaxed", style="text-align: justify;"><strong class="text-slate-300 block mb-2">See the Pattern. Make the Call.</strong>A specialist reasoning engine powered by a 202k-vector clinical knowledge base. It identifies critical risk factors, routes each patient to the appropriate expert pathway, retrieves similar cases from historical patterns, and produces transparent, step-by-step reasoning to support accurate, Length-of-Stay predictions.</div>
+            </div>
+
+            <!-- RIGHT STREAM -->
+            <div class="lg:col-span-8 flex flex-col h-full min-h-[600px]">
+                <div class="flex-1 bg-glass backdrop-blur-xl border border-border rounded-2xl p-1 shadow-2xl flex flex-col relative overflow-hidden">
+                    <div class="p-4 border-b border-white/5 bg-slate-900/40 flex justify-between items-center rounded-t-xl"><span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">Logic Stream</span><span id="statusIndicator" class="text-[10px] font-mono text-slate-500 opacity-0 transition-opacity">PROCESSING...</span></div>
+                    <div id="thinkingLog" class="flex-1 overflow-y-auto p-6 relative"><div id="placeholder" class="absolute inset-0 flex flex-col items-center justify-center text-slate-700/50 pointer-events-none"><span class="text-xs uppercase tracking-widest">Awaiting Data Stream</span></div></div>
+                    <!-- RESULT -->
+                    <div id="resultCard" class="absolute inset-x-0 bottom-0 translate-y-full transition-transform duration-500 ease-out bg-[#0b1121] border-t border-emerald-500/50 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] z-20 flex flex-col max-h-[85%]">
+                        <div class="p-6 pb-2 flex justify-between items-start bg-gradient-to-b from-slate-900 to-[#0b1121]">
+                            <div><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Recommendation</p><h2 id="finalPred" class="text-5xl font-black text-white tracking-tighter drop-shadow-lg">--</h2></div>
+                            <div class="text-right"><p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Confidence</p><div id="finalConf" class="text-3xl font-mono text-emerald-400 font-bold">0%</div></div>
+                        </div>
+                        <div class="px-6 py-2 bg-[#0b1121]"><p id="finalReason" class="text-sm text-slate-300 italic border-l-2 border-slate-700 pl-4 py-1 leading-relaxed"></p></div>
+                        
+                        <!-- FEEDBACK UI -->
+                        <div id="feedbackUI" class="px-6 py-3 bg-[#0b1121] border-b border-slate-800 flex justify-between items-center">
+                            <span class="text-xs text-slate-500 uppercase tracking-wide font-bold">Is this prediction correct?</span>
+                            <div class="flex gap-2">
+                                <button onclick="sendFeedback(true)" class="text-xs bg-emerald-900/30 text-emerald-400 border border-emerald-800 px-3 py-1 rounded hover:bg-emerald-800 hover:text-white transition">YES</button>
+                                <button onclick="sendFeedback(false)" class="text-xs bg-red-900/30 text-red-400 border border-red-800 px-3 py-1 rounded hover:bg-red-800 hover:text-white transition">NO</button>
+                            </div>
+                        </div>
+                        <div id="feedbackThanks" class="hidden px-6 py-3 bg-[#0b1121] border-b border-slate-800 text-center text-xs text-emerald-500 font-mono">[ MEMORY UPDATED ]</div>
+
+                        <div class="flex items-center justify-between px-6 py-3 border-b border-slate-800 bg-[#0b1121]">
+                            <button onclick="toggleReport()" class="group flex items-center gap-2 text-xs font-bold text-emerald-400 uppercase tracking-wide hover:text-emerald-300 transition"><span>Forensic Audit Report</span><span id="arrowIcon" class="transform transition-transform">▼</span></button>
+                            <button onclick="downloadPDF()" class="text-xs font-bold text-slate-500 uppercase tracking-wide hover:text-white transition flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded hover:bg-slate-700 border border-slate-700">Save PDF</button>
+                        </div>
+                        <div id="fullSynthesisContainer" class="hidden border-t border-slate-800 flex-1 overflow-hidden bg-[#0b1121]"><div id="pdfContent" class="p-8 overflow-y-auto h-full report-content" style="color:#e2e8f0;font-size:0.95rem;line-height:1.6;"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPT -->
+    <script>
+        let currentRequestId = null;
+
+        function enterSystem() { document.getElementById('welcome-screen').style.opacity = '0'; setTimeout(() => { document.getElementById('welcome-screen').style.display = 'none'; document.getElementById('main-app').classList.remove('hidden'); requestAnimationFrame(() => { document.getElementById('main-app').classList.remove('opacity-0'); }); }, 800); }
+        const logContainer = document.getElementById('thinkingLog'), placeholder = document.getElementById('placeholder'), resultCard = document.getElementById('resultCard'), statusInd = document.getElementById('statusIndicator'), form = document.getElementById('patientForm'), runBtn = document.getElementById('runBtn');
+        function toggleAccordion(id) { const content = document.getElementById(id); const parent = content.parentElement; if(content.style.maxHeight){content.style.maxHeight=null;parent.classList.remove('accordion-open');}else{content.style.maxHeight=content.scrollHeight+"px";parent.classList.add('accordion-open');} }
+        function toggleReport() { const container = document.getElementById('fullSynthesisContainer'); const arrow = document.getElementById('arrowIcon'); if(container.classList.contains('hidden')){container.classList.remove('hidden');resultCard.style.height='85%';arrow.style.transform='rotate(180deg)';}else{container.classList.add('hidden');resultCard.style.height='auto';arrow.style.transform='rotate(0deg)';} }
+        
+        // --- FIXED PDF GENERATOR ---
+        function downloadPDF() { 
+            const element = document.getElementById('pdfContent'); 
+            const clone = element.cloneNode(true); 
+            
+            // Apply strict styles to the clone
+            clone.classList.add('pdf-mode');
+            clone.style.height = 'auto'; // Force expansion
+            clone.style.overflow = 'visible'; // Ensure no cut-off
+            
+            const header = document.createElement("h1"); 
+            header.innerText = "FORENSIC CASE AUDIT"; 
+            clone.prepend(header);
+            
+            // Create a temporary off-screen container to render the clone in full height
+            const container = document.createElement('div');
+            container.style.position = 'absolute';
+            container.style.left = '-9999px';
+            container.style.top = '0';
+            container.style.width = '800px'; // A4ish width
+            container.appendChild(clone);
+            document.body.appendChild(container);
+
+            html2pdf().set({
+                margin: 15, 
+                filename: 'Farasat_Report.pdf', 
+                image: {type:'jpeg',quality:0.98}, 
+                html2canvas:{scale:2,useCORS:true, scrollY:0}, 
+                jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}, 
+                pagebreak:{mode:['avoid-all','css','legacy']}
+            }).from(clone).save().then(() => {
+                document.body.removeChild(container);
+            });
+        }
+
+        form.addEventListener('submit', async (e) => { e.preventDefault(); logContainer.innerHTML=''; placeholder.style.display='none'; resultCard.style.transform='translateY(100%)'; document.getElementById('fullSynthesisContainer').classList.add('hidden'); document.getElementById('feedbackUI').classList.remove('hidden'); document.getElementById('feedbackThanks').classList.add('hidden'); statusInd.style.opacity='1'; statusInd.classList.add('animate-pulse'); runBtn.disabled=true; runBtn.innerText="ANALYZING CASE..."; try{ const response = await fetch('/predict_stream', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({note:document.getElementById('noteInput').value}) }); const reader = response.body.getReader(); const decoder = new TextDecoder(); while(true){ const {done, value} = await reader.read(); if(done) break; const lines = decoder.decode(value, {stream:true}).split('\n'); for(const line of lines){ if(!line.trim()) continue; try{handleStreamEvent(JSON.parse(line));}catch(err){} } } } catch(e){logContainer.innerHTML+=`<div class="text-red-500 text-xs p-4">Error: ${e}</div>`;} runBtn.disabled=false; runBtn.innerText="INITIATE ANALYSIS"; statusInd.style.opacity='0'; });
+
+        function handleStreamEvent(msg) { const item = document.createElement('div'); item.className = "timeline-item"; if(msg.type==='thought'){ item.innerHTML=`<div class="timeline-dot"></div><div class="flex items-center gap-3"><span class="text-lg bg-slate-800 w-8 h-8 rounded flex items-center justify-center border border-slate-700 shadow-sm text-slate-400">${msg.icon}</span><span class="text-slate-200 text-sm font-medium tracking-wide">${msg.content}</span></div>`; } else if(msg.type==='info'){ const id='acc-'+Math.random().toString(36).substr(2,9); item.innerHTML=`<div class="timeline-dot"></div><div class="ml-11 mt-1"><div class="bg-slate-800/40 border border-slate-700/50 rounded-md overflow-hidden text-xs transition-all duration-300"><button onclick="toggleAccordion('${id}')" class="w-full flex justify-between items-center p-3 hover:bg-slate-800/50 transition"><div class="flex items-center gap-2"><span class="font-bold text-slate-500 uppercase text-[10px] tracking-wider">${msg.title}</span></div><span class="accordion-icon text-emerald-500 text-lg leading-none">+</span></button><div id="${id}" class="accordion-content"><div class="p-3 pt-0 border-t border-slate-800/50"><div class="font-mono text-slate-400 whitespace-pre-wrap text-[11px] pt-2">${msg.content}</div></div></div></div></div>`; } else if(msg.type==='result'){ showResult(msg); return; } logContainer.appendChild(item); logContainer.scrollTop=logContainer.scrollHeight; item.classList.add('active'); }
+
+        function showResult(msg) { 
+            const data=msg.data; currentRequestId = msg.id;
+            const isLong=data.prediction?.toLowerCase().includes('long'); document.getElementById('finalPred').innerText=data.prediction||"UNKNOWN"; document.getElementById('finalPred').className=`text-5xl font-black tracking-tighter mt-1 ${isLong?'text-blue-400':'text-orange-400'}`; document.getElementById('finalConf').innerText=(msg.data.confidence||'?')+'%'; document.getElementById('finalReason').innerText=msg.data.reasoning||"Analysis complete."; document.getElementById('pdfContent').innerHTML=marked.parse(msg.synthesis||""); animateValue(document.getElementById('finalConf'),0,parseInt(data.confidence)||0,1500); resultCard.style.transform='translateY(0)'; 
+        }
+
+        async function sendFeedback(isCorrect) {
+            if(!currentRequestId) return;
+            const pred = document.getElementById('finalPred').innerText;
+            const actual = isCorrect ? pred : (pred.includes("Short") ? "Long" : "Short");
+            
+            await fetch('/submit_feedback', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({id:currentRequestId, actual_outcome:actual}) });
+            document.getElementById('feedbackUI').classList.add('hidden');
+            document.getElementById('feedbackThanks').classList.remove('hidden');
+        }
+
+        function animateValue(obj,start,end,duration){ let startTimestamp=null; const step=(timestamp)=>{ if(!startTimestamp) startTimestamp=timestamp; const progress=Math.min((timestamp-startTimestamp)/duration,1); obj.innerHTML=Math.floor(progress*(end-start)+start)+"%"; if(progress<1) window.requestAnimationFrame(step); }; window.requestAnimationFrame(step); }
+    </script>
+</body>
+</html>
