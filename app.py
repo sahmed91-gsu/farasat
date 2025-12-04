@@ -9,7 +9,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 MODEL_NAME = "BAAI/bge-large-en-v1.5"
-DB_PATH = "./local_chroma_db"
+# OLD TO RUN LOCALLY
+# DB_PATH = "./local_chroma_db"
+
+# NEW (Use a temporary writable directory for Hugging Face)
+import tempfile
+DB_PATH = os.path.join(tempfile.gettempdir(), "chroma_db_runtime")
 
 from logic import StreamingSpecialistAgent
 

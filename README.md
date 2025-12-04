@@ -7,6 +7,8 @@ sdk: docker
 pinned: false
 ---
 
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-blue)](https://huggingface.co/spaces/sahmed91/Farasat-Clinical-AI)
+
 # 🧬 Farasat: Forensic Clinical AI Auditor
 
 **Farasat** ("Insight" or "Physiognomy") is a Multi-Agent Retrieval-Augmented Generation (RAG) system designed to predict patient retention in substance use treatment programs.
