@@ -62,7 +62,7 @@ Evaluated on a held-out test set of **10,000 records**:
 *   **Frontend:** HTML5, TailwindCSS, Glassmorphism UI.
 *   **Backend:** Flask (Python 3.10).
 *   **Database:** ChromaDB (Disk-based persistence).
-*   **AI Engine:** Fireworks AI (Llama-3-405b / GPT-OSS-120b).
+*   **AI Engine:** Fireworks AI (GPT-OSS-120b).
 *   **Memory:** JSONL-based active learning loop.
 
 ---
